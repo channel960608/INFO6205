@@ -11,6 +11,8 @@ public class RandomWalk {
     private int x = 0;
     private int y = 0;
 
+    int[] directions = {-1, 0, 1, 0, -1};
+
     private final Random random = new Random();
 
     /**
@@ -21,6 +23,8 @@ public class RandomWalk {
      */
     private void move(int dx, int dy) {
         // TO BE IMPLEMENTED
+        x += dx;
+        y += dy;
     }
 
     /**
@@ -29,7 +33,9 @@ public class RandomWalk {
      * @param m the number of steps the drunkard takes
      */
     private void randomWalk(int m) {
-        // TO BE IMPLEMENTED
+        for (int i = 0; i < m; ++i) {
+            randomMove();
+        }
     }
 
     /**
@@ -48,8 +54,7 @@ public class RandomWalk {
      * @return the (Euclidean) distance from the origin to the current position.
      */
     public double distance() {
-        // TO BE IMPLEMENTED
-        return 0;
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
     /**
