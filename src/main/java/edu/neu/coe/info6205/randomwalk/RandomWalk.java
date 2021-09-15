@@ -88,6 +88,7 @@ public class RandomWalk {
         int n = 10000;
         int max = 512;
         double[] result = new double[max + 1];
+        System.out.println(String.format("Run %d experiments for each n from 1 to %d and ", n, max));
         for (int m = 1; m <= max; ++m) {
             double meanDistance = randomWalkMulti(m, n);
             System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
