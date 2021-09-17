@@ -21,7 +21,7 @@ To be specific, the calculated result in my experiment is:
 ## Evidence
 The relation between d and n  
 ![](./relation_n_d.png)  
-The relation between $d^2$ and n  
+The relation between d^2 and n  
 ![](./relation_n_d_p_2.png)  
 The linear fit result  
 ![](./fit_result.png)  
