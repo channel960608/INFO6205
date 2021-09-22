@@ -53,19 +53,21 @@ public class Timer {
      * @return the average milliseconds per repetition.
      */
     public <T, U> double repeat(int n, Supplier<T> supplier, Function<T, U> function, UnaryOperator<T> preFunction, Consumer<U> postFunction) {
+        pause();
         logger.trace("repeat: with " + n + " runs");
         for (int i = 0; i < n; i++) {
             T t = supplier.get();
             if (null != preFunction) {
                 t = preFunction.apply(t);
             }
+            resume();
             U u = function.apply(t);
+            lap();
+            pause();
             if (null != postFunction) {
                 postFunction.accept(u);
             }
-            lap();
         }
-        pause();
         return meanLapTime();
     }
 
