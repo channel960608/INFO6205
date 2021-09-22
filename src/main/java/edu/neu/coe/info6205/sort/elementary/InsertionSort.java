@@ -8,6 +8,8 @@ import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.util.Config;
 
+import java.util.Arrays;
+
 public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
 
     /**
@@ -58,12 +60,27 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
 
-        // TO BE IMPLEMENTED
+        for (int i = from + 1; i < to; ++i) {
+            int index = i - 1;
+            while (index >= 0 && helper.compare(xs, index, index + 1) > 0) {
+                helper.swap(xs, index, index + 1);
+                --index;
+            }
+        }
+
     }
 
     public static final String DESCRIPTION = "Insertion sort";
 
     public static <T extends Comparable<T>> void sort(T[] ts) {
         new InsertionSort<T>().mutatingSort(ts);
+    }
+
+    public static void main(String... args) {
+        Integer[] arr = new Integer[]{1,4,3,2,5};
+        sort(arr);
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
     }
 }
