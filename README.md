@@ -8,4 +8,4 @@ Email: chen.luo1@northeastern.edu
 ## Submissions
 
 - [Assignment 1](./assignments/assignment1)
-- 
+- [Assignment 2](./assignments/assignment2)
