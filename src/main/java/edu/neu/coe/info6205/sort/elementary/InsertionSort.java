@@ -4,10 +4,16 @@
 package edu.neu.coe.info6205.sort.elementary;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
+import edu.neu.coe.info6205.sort.GenericSort;
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.HelperFactory;
 import edu.neu.coe.info6205.sort.SortWithHelper;
+import edu.neu.coe.info6205.util.Benchmark_Timer;
 import edu.neu.coe.info6205.util.Config;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
@@ -77,10 +83,93 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
     }
 
     public static void main(String... args) {
-        Integer[] arr = new Integer[]{1,4,3,2,5};
-        sort(arr);
-        for (int num : arr) {
-            System.out.print(num + " ");
+
+        int times = 1000;
+        int arrayLength = 1;
+        Config config = null;
+        try {
+            config = Config.load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        int doubling = 15;
+        double[][] result = new double[4][doubling];
+        for (int k = 0; k < doubling; ++k) {
+            arrayLength *= 2;
+            final int length = arrayLength;
+            Helper<Integer> helper = HelperFactory.create("InsertionSort", arrayLength, config);
+            helper.init(arrayLength);
+            final GenericSort<Integer> sorter = new InsertionSort<>();
+
+
+            final double t1 = new Benchmark_Timer<Integer[]>(
+                    "InsertSortBenchmarkRandom",
+                    null,
+                    t -> sorter.sort(t),
+                    null
+            ).runFromSupplier(() ->
+                    helper.random(Integer.class, r -> r.nextInt(1000)), times);
+            result[0][k] = t1;
+
+            final double t2 = new Benchmark_Timer<Integer[]>(
+                    "InsertSortBenchmarkOrdered",
+                    null,
+                    t -> sorter.sort(t),
+                    null
+            ).runFromSupplier(() -> {
+                Integer[] nums = new Integer[length];
+                for (int i = 0; i < nums.length; ++i) {
+                    nums[i] = i;
+                }
+                return nums;
+            }, times);
+            result[1][k] = t2;
+
+            final double t3 = new Benchmark_Timer<Integer[]>(
+                    "InsertSortBenchmarkPartially",
+                    null,
+                    t -> sorter.sort(t),
+                    null
+            ).runFromSupplier(() -> {
+                Integer[] nums = helper.random(Integer.class, r -> r.nextInt(1000));
+                Arrays.sort(nums, nums.length / 3, nums.length * 2 / 3);
+                return nums;
+            }, times);
+            result[2][k] = t3;
+
+            final double t4 = new Benchmark_Timer<Integer[]>(
+                    "InsertSortBenchmarkReversed",
+                    null,
+                    t -> sorter.sort(t),
+                    null
+            ).runFromSupplier(() -> {
+                Integer[] nums = new Integer[length];
+                for (int i = 0; i < nums.length; ++i) {
+                    nums[i] = nums.length - i;
+                }
+                return nums;
+            }, times);
+            result[3][k] = t4;
+        }
+
+        StringBuilder sb = new StringBuilder("");
+        for (int i = 0; i < doubling; ++i) {
+            sb.append(i);
+            for (int j = 0; j < 4; ++j) {
+                sb.append(", ");
+                sb.append(result[j][i]);
+            }
+            sb.append("\n");
+        }
+
+        String filePath = "./data_assignment2.csv";
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
+            bufferedWriter.write(sb.toString());
+            System.out.println("Succeed to output data to " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Fail to write file " + filePath);
+        }
+
     }
 }

@@ -62,8 +62,7 @@ public class Timer {
             }
             resume();
             U u = function.apply(t);
-            lap();
-            pause();
+            pauseAndLap();
             if (null != postFunction) {
                 postFunction.accept(u);
             }
