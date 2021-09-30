@@ -2,7 +2,10 @@ package edu.neu.coe.info6205.threesum;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Implementation of ThreeSum which follows the approach of dividing the solution-space into
@@ -37,7 +40,18 @@ public class ThreeSumQuadratic implements ThreeSum {
      */
     public List<Triple> getTriples(int j) {
         List<Triple> triples = new ArrayList<>();
-        // TO BE IMPLEMENTED : implement getTriples
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < j; ++i) {
+            set.add(a[i]);
+        }
+
+        for (int i = j + 1; i < a.length; ++i) {
+            if (set.contains(-a[j] - a[i])) {
+                triples.add(new Triple(-a[j] - a[i], a[j], a[i]));
+            }
+        }
+
         return triples;
     }
 
