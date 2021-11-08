@@ -40,13 +40,21 @@ class ParSort {
         this.parallelism = parallelism;
     }
 
+    public boolean isPoolEmpty() {
+        return !this.pool.hasQueuedSubmissions();
+    }
+
     public void init() {
         this.array = new int[getArraySize()];
         int range = Integer.MAX_VALUE / 5 > getArraySize() ? Integer.MAX_VALUE : 5 * getArraySize();
         for (int i = 0; i < arraySize; i++) {
             array[i] = random.nextInt(range);
         }
-        this.pool = new ForkJoinPool(parallelism);
+        this.pool = new ForkJoinPool(this.parallelism);
+    }
+
+    public void cleanPool() {
+        this.pool.shutdownNow();
     }
 
     public void sortArray() {

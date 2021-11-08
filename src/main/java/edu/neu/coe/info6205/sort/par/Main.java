@@ -107,13 +107,16 @@ public class Main {
                 "InsertSortBenchmarkReversed",
                 ps -> {
                     ps.init();
+                    if (!ps.isPoolEmpty()) {
+                        logger.warn("Pool is not empty");
+                    }
                     return ps;
                 },
                 ps -> {
                     ps.sortArray();
                 },
                 (rs) -> {
-                    return;
+                    rs.cleanPool();
                 }
         ).runFromSupplier(() -> new ParSort(cutoff, arraySize, parallelism), 10);
         logger.info(
