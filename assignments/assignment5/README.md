@@ -71,6 +71,14 @@ The x axis represents for cutoff, the y axis represents for sort efficiency(arra
 
 It's clear in the first picture for 8 cores that the performance is the best when cutoff is about 50000. Seems that the best cutoff doesn't change with the growth of array size. And for the result of 4 cores cpu, the efficiency is almost the same and cutoff = 50000 won with a small advantage.
 
+#### Further Experiment
+Given parallelism = 8 and array size = 2 ^ 25, we try to find the best cutoff from 10000 to 500000.  
+![](best_cutoff_in_further.png)  
+The x axis represents for cutoff, from 10000 to 500000, step by 10000, the y axis represents for sort efficiency(array size / time). Each line represents one combination of size and parallelism.
+
+The relationship between cutoff and efficiency is not linear. We can see that it reaches the peek when cutoff is around 50000 and is 170000. The overall randomness is relatively large. But we still can choose 50000 is the best choice for this situation.
+
+
 #### Conclusion for cutoff
 
 The best cutoff in my experiments is about 50000. And the best value will not increase with the growth of array size. 
@@ -101,12 +109,12 @@ The size doesn't matter when it's big enough.
 Parameters can be defined in pom.xml like this.  
 ```xml
 <configuration>
-                    <mainClass>edu.neu.coe.info6205.sort.par.Main</mainClass>
-                    <arguments>
-                        <argument>-baseParallelism=3</argument>
-                        <argument>-stepSize=5</argument>
-                    </arguments>
-                </configuration>
+    <mainClass>edu.neu.coe.info6205.sort.par.Main</mainClass>
+    <arguments>
+        <argument>-baseParallelism=3</argument>
+        <argument>-stepSize=5</argument>
+    </arguments>
+</configuration>
 ```
 
 ### Run the service
