@@ -22,6 +22,7 @@ public class Main {
     static int baseCutoff = 1 << 12;
     static int baseSize = 1 << 18;
 
+    // mvn exec:java -Dexec.cleanupDaemonThreads=false
     public static void main(String[] args) {
         configure(args);
         doExperiments();
